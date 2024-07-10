@@ -1,10 +1,11 @@
 services:
-  server:
+  nginx:
     image: nginx:stable-alpine
     ports:
       - '8000:80'
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./src:/var/www/html
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
   php:
     build:
       context: ./dockerfile
@@ -14,9 +15,10 @@ services:
     user: ${UID}:${GID}
   mysql:
     image: mysql:8
+    restart: always
     environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
   composer:
     build:
