@@ -1,5 +1,6 @@
 services:
   nginx:
+    container_name: nginx
     image: nginx:stable-alpine
     ports:
       - '8000:80'
@@ -31,5 +32,8 @@ services:
     build:
       context: ./dockerfile
       dockerfile: node.dockerfile
+    depends_on:
+      app:
+        condition: service_started
     volumes:
       - ./src:/var/www/html
