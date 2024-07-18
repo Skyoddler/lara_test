@@ -6,6 +6,8 @@ use App\Http\Requests\StorePredictionsRequest;
 use App\Http\Requests\UpdatePredictionsRequest;
 use App\Models\Predictions;
 use App\Services\PredictionsService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class PredictionsController extends Controller
 {
@@ -17,6 +19,15 @@ class PredictionsController extends Controller
     public function index()
     {
         return view('predictions.index');
+    }
+
+    public function test(Request $request)
+    {
+        if (!App::isLocal()) {
+            abort(403);
+        }
+
+        return view('test');
     }
 
     /**
@@ -44,8 +55,10 @@ class PredictionsController extends Controller
      * Display the specified resource.
      *
      */
-    public function show(PredictionsService $service)
+    public function show(Request $request, PredictionsService $service)
     {
+
+
         $prediction = $service->getRandomPrediction();
 
         return view('predictions.index', ['prediction' => $prediction]);

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PredictionsController::class, 'index'])->name('predictions.index');
 Route::get('/show', [PredictionsController::class, 'show'])->name('predictions.show');
+Route::get('/test', [PredictionsController::class, 'test'])->name('predictions.test');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
