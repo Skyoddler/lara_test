@@ -11,9 +11,8 @@ if npm install; then
 
     # Run npm run dev
     echo "Running npm run dev..."
-    npm run dev
 
-    if npm run dev; then
+    if npm run dev -- --host; then
         echo "npm run dev completed successfully."
     else
         echo "npm run dev failed."
