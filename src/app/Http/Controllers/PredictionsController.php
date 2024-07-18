@@ -16,18 +16,12 @@ class PredictionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(PredictionsService $service)
     {
-        return view('predictions.index');
-    }
 
-    public function test(Request $request)
-    {
-        if (!App::isLocal()) {
-            abort(403);
-        }
+        $prediction = $service->getRandomPrediction();
 
-        return view('test');
+        return view('predictions.index', ['prediction' => $prediction]);
     }
 
     /**
@@ -55,13 +49,9 @@ class PredictionsController extends Controller
      * Display the specified resource.
      *
      */
-    public function show(Request $request, PredictionsService $service)
+    public function show(Request $request)
     {
 
-
-        $prediction = $service->getRandomPrediction();
-
-        return view('predictions.index', ['prediction' => $prediction]);
     }
 
     /**
