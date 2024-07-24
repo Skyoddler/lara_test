@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Predictions;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -12,11 +10,18 @@ use Illuminate\Validation\ValidationException;
 class PredictionsService
 {
     /**
-     * @return Model|Builder|object|null
+     * @return mixed|string
      */
     public function getRandomPrediction()
     {
-        return DB::table('predictions')->inRandomOrder()->first();
+        $model = DB::table('predictions')->inRandomOrder()->first();
+        $data = '';
+
+        if (isset($model)) {
+            $data = $model->data;
+        }
+
+        return $data;
     }
 
     public function createPredictionFromRequest(Request $request): Predictions
@@ -39,7 +44,7 @@ class PredictionsService
      */
     private function validateRequest(Request $request)
     {
-        $data = $request->all();
+        $data = $request->request->all();
 
         if (!isset($data['new_prediction']) || $data['new_prediction'] === "") {
             throw ValidationException::withMessages([
