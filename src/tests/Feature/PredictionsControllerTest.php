@@ -3,10 +3,16 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PredictionsControllerTest extends TestCase
 {
+
+    use RefreshDatabase;
+
+    protected $seed = true;
+
     /**
      * A basic feature test example.
      *
