@@ -3,7 +3,6 @@
 use App\Http\Controllers\PredictionsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
-use App\Http\Middleware\PredictionPermission;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [PredictionsController::class, 'index'])->name('predictions.index');
-Route::get('/test', [TestController::class, 'test'])->name('test');
+Route::get('/test', [TestController::class, 'test'])->name('test'); //Comment on prod
 
 Route::get('/dashboard', function () {
     return view('dashboard');

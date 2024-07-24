@@ -6,43 +6,61 @@ use App\Http\Requests\StorePredictionsRequest;
 use App\Http\Requests\UpdatePredictionsRequest;
 use App\Models\Predictions;
 use App\Services\PredictionsService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 
 class PredictionsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(PredictionsService $service)
+    private PredictionsService $predictionsService;
+
+    public function __construct(PredictionsService $predictionsService)
     {
-
-        $prediction = $service->getRandomPrediction();
-
-        return view('predictions.index', ['prediction' => $prediction]);
+        $this->predictionsService = $predictionsService;
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
+     */
+    public function guest()
+    {
+        $prediction = $this->predictionsService->getRandomPrediction();
+
+        return view('predictions.guest', ['prediction' => $prediction->data]);
+    }
+
+    /**
+     * @param Predictions|null $prediction
+     * @return Application|Factory|View
+     */
+    public function index(Predictions $prediction = null)
+    {
+        if (!isset($prediction)) {
+            $prediction = $this->predictionsService->getRandomPrediction();
+        }
+
+        return view('predictions.index', ['prediction' => $prediction->data]);
+    }
+
+    /**
+     * @return Application|Factory|View
      */
     public function create()
     {
-        //
+        return view('predictions.create');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePredictionsRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StorePredictionsRequest $request
+     * @return RedirectResponse
      */
     public function store(StorePredictionsRequest $request)
     {
-        //
+        $prediction = $this->predictionsService->createPredictionFromRequest($request);
+
+        return redirect()->route('predictions.index', ['prediction' => $prediction->id]);
     }
 
     /**
@@ -57,8 +75,6 @@ class PredictionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Predictions  $predictions
-     * @return \Illuminate\Http\Response
      */
     public function edit(Predictions $predictions)
     {
@@ -68,9 +84,6 @@ class PredictionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePredictionsRequest  $request
-     * @param  \App\Models\Predictions  $predictions
-     * @return \Illuminate\Http\Response
      */
     public function update(UpdatePredictionsRequest $request, Predictions $predictions)
     {
@@ -79,9 +92,6 @@ class PredictionsController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Predictions  $predictions
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Predictions $predictions)
     {
