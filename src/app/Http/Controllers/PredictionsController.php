@@ -26,9 +26,9 @@ class PredictionsController extends Controller
      */
     public function guest()
     {
-        $prediction = $this->predictionsService->getRandomPrediction();
+        $predictionData = $this->predictionsService->getRandomPrediction();
 
-        return view('predictions.guest', ['prediction' => $prediction->data]);
+        return view('predictions.guest', ['prediction' => $predictionData]);
     }
 
     /**
@@ -37,17 +37,21 @@ class PredictionsController extends Controller
      */
     public function index(Predictions $prediction = null)
     {
+        $predictionData = '';
+
         if (!isset($prediction)) {
-            $prediction = $this->predictionsService->getRandomPrediction();
+            $predictionData = $this->predictionsService->getRandomPrediction();
+        } else {
+            $predictionData = $prediction->data;
         }
 
-        return view('predictions.index', ['prediction' => $prediction->data]);
+        return view('predictions.index', ['prediction' => $predictionData]);
     }
 
     /**
      * @return Application|Factory|View
      */
-    public function create()
+    public function create(StorePredictionsRequest $request)
     {
         return view('predictions.create');
     }
