@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePredictionsRequest;
 use App\Http\Requests\StorePredictionsRequest;
 use App\Http\Requests\UpdatePredictionsRequest;
 use App\Models\Predictions;
@@ -51,7 +52,7 @@ class PredictionsController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function create(StorePredictionsRequest $request)
+    public function create(CreatePredictionsRequest $request)
     {
         return view('predictions.create');
     }

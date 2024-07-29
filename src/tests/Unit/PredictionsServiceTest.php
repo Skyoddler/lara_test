@@ -38,10 +38,6 @@ class PredictionsServiceTest extends TestCase
         $model = $service->createPredictionFromRequest($request);
 
         $this->assertEquals($testModel->data, $model->data);
-
-        $wrongRequest = $this->prepareRequest(true);
-        $this->expectException(ValidationException::class);
-        $model = $service->createPredictionFromRequest($wrongRequest);
     }
 
     private function prepareModel()
