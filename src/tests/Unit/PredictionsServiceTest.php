@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\DTO\PredictionsDTO;
 use App\Models\Predictions;
 use App\Services\PredictionsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,22 +24,24 @@ class PredictionsServiceTest extends TestCase
         $this->seed();
 
         $service = new PredictionsService();
-        $model = $service->getRandomPrediction();
+        $data = $service->getRandomPrediction();
 
-        $this->assertNotEmpty($model);
+        $this->assertNotEmpty($data);
     }
 
-    public function testCreatePredictionFromRequest()
+    public function testCreatePredictionFromDTO()
     {
         $this->seed();
         $request = $this->prepareRequest();
         $testModel = $this->prepareModel();
 
         $service = new PredictionsService();
-        $model = $service->createPredictionFromRequest($request);
+        $predictionsDTO = PredictionsDTO::fromRequest($request);
+        $model = $service->createPredictionFromDTO($predictionsDTO);
 
         $this->assertEquals($testModel->data, $model->data);
     }
+
 
     private function prepareModel()
     {

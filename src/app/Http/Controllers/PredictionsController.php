@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\PredictionsDTO;
 use App\Http\Requests\CreatePredictionsRequest;
 use App\Http\Requests\StorePredictionsRequest;
 use App\Http\Requests\UpdatePredictionsRequest;
@@ -63,7 +64,8 @@ class PredictionsController extends Controller
      */
     public function store(StorePredictionsRequest $request)
     {
-        $prediction = $this->predictionsService->createPredictionFromRequest($request);
+        $predictionDTO = PredictionsDTO::fromRequest($request);
+        $prediction = $this->predictionsService->createPredictionFromDTO($predictionDTO);
 
         return redirect()->route('predictions.index', ['prediction' => $prediction->id]);
     }
