@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\DTO\PredictionsDTO;
 use App\Models\Predictions;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class PredictionsService
 {
@@ -18,10 +18,10 @@ class PredictionsService
         return $data->data ?? '';
     }
 
-    public function createPredictionFromRequest(Request $request): Predictions
+    public function createPredictionFromDTO(PredictionsDTO $predictionsDTO): Predictions
     {
         $prediction = new Predictions();
-        $prediction->data = $request->get('new_prediction');
+        $prediction->data = $predictionsDTO->data;
 
         $prediction->save();
 
