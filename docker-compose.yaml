@@ -26,6 +26,8 @@ services:
       dockerfile: app.dockerfile
     volumes:
       - ./src:/var/www/html
+    extra_hosts:
+      - host.docker.internal:host-gateway
     user: ${UID}:${GID}
   node:
     container_name: node
